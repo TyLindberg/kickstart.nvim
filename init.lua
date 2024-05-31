@@ -193,6 +193,13 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Filetype detection
+vim.filetype.add {
+  pattern = {
+    ['requirements.*.txt'] = 'requirements',
+  },
+}
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -862,7 +869,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'cpp', 'cmake', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'cpp', 'cmake', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'requirements', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
