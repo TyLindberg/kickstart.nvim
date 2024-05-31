@@ -560,21 +560,21 @@ require('lazy').setup({
         clangd = {},
         cmake = {},
         -- gopls = {},
-        pyright = {
-          settings = {
-            pyright = {
-              -- Using Ruff's import organizer
-              disableOrganizeImports = true,
-            },
-            python = {
-              analysis = {
-                -- Ignore all files for analysis to exclusively use Ruff for linting
-                ignore = { '*' },
-              },
-            },
-          },
-        },
-        ruff_lsp = {},
+        -- pyright = {
+        --   settings = {
+        --     pyright = {
+        --       -- Using Ruff's import organizer
+        --       disableOrganizeImports = true,
+        --     },
+        --     python = {
+        --       analysis = {
+        --         -- Ignore all files for analysis to exclusively use Ruff for linting
+        --         ignore = { '*' },
+        --       },
+        --     },
+        --   },
+        -- },
+        ruff = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -659,12 +659,38 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        python = { 'ruff_organize_imports' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
+      },
+      formatters = {
+        -- Solution found here: https://github.com/astral-sh/ruff-lsp/issues/387#issuecomment-2069141768
+        -- We execute this in a function since conform.util is not defined yet, as conform is lazily loaded
+        ruff_organize_imports = function()
+          return {
+            command = 'ruff',
+            args = {
+              'check',
+              '--force-exclude',
+              '--select=I001',
+              '--fix',
+              '--exit-zero',
+              '--stdin-filename',
+              '$FILENAME',
+              '-',
+            },
+            stdin = true,
+            cwd = require('conform.util').root_file {
+              'pyproject.toml',
+              'ruff.toml',
+              '.ruff.toml',
+            },
+          }
+        end,
       },
     },
   },
