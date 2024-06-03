@@ -567,6 +567,7 @@ require('lazy').setup({
         clangd = {},
         cmake = {},
         -- gopls = {},
+        jsonls = {},
         ruff = {},
         pyright = {
           -- Disable hints from pyright? Hoping to disable duplicates with ruff
@@ -876,7 +877,22 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'cpp', 'cmake', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'requirements', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'cpp',
+        'cmake',
+        'html',
+        'json',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'python',
+        'requirements',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
