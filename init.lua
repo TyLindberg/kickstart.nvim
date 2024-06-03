@@ -567,21 +567,28 @@ require('lazy').setup({
         clangd = {},
         cmake = {},
         -- gopls = {},
-        -- pyright = {
-        --   settings = {
-        --     pyright = {
-        --       -- Using Ruff's import organizer
-        --       disableOrganizeImports = true,
-        --     },
-        --     python = {
-        --       analysis = {
-        --         -- Ignore all files for analysis to exclusively use Ruff for linting
-        --         ignore = { '*' },
-        --       },
-        --     },
-        --   },
-        -- },
         ruff = {},
+        pyright = {
+          -- Disable hints from pyright? Hoping to disable duplicates with ruff
+          -- Based on this: https://www.reddit.com/r/neovim/comments/11k5but/comment/jbjwwtf/
+          capabilities = (function()
+            local caps = vim.lsp.protocol.make_client_capabilities()
+            caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+            return caps
+          end)(),
+          settings = {
+            pyright = {
+              -- Using Ruff's import organizer
+              disableOrganizeImports = true,
+            },
+            -- python = {
+            --   analysis = {
+            --     -- Ignore all files for analysis to exclusively use Ruff for linting
+            --     ignore = { '*' },
+            --   },
+            -- },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
